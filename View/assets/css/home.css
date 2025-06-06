@@ -1,0 +1,96 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+}
+
+
+
+nav {
+    padding: 1rem 2rem;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+
+.nav-logo {
+    width: 150px;
+    height: auto;
+    margin-top: 0.8rem;
+}
+
+
+main {
+    flex: 1;
+    padding: 1.2rem;
+    font-family: poppins, sans-serif;
+    color: var(--text);
+
+}
+
+
+.services-container h1 {
+    font-size: 1rem;
+    font-weight: 800;
+    text-align: center;
+}
+
+.services-container p {
+    font-size: 0.7rem;
+    text-align: center;
+    color: var(--info);
+}
+
+.services-items {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: space-between;
+    margin-top: 20px;
+    gap: 1rem;
+}
+
+.services-items a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 1px solid #033d94;
+    border-radius: 5px;
+    padding: 0 1rem;
+    gap: 0.75rem;
+    min-height: 55px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+    user-select: none;
+}
+.services-items span {
+    color: #033d94;
+}
+
+.services-items a:active {
+    background-color: var(--primary);
+    color: white !important;
+    transform: scale(0.98);
+}
+
+.services-items a:active span {
+    color: white !important;
+    transform: scale(0.98);
+
+}
+
+
+.services-items h2 {
+    font-size: 1rem;
+}
+
+footer {
+    background-color: var(--primary);
+    padding: 1rem 2rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: white;
+}
