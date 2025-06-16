@@ -15,7 +15,7 @@ require_once 'head.php'
         <section class="services-container">
             <h1>¿Que servicio vas a realizar?</h1>
             <p>Selecciona el servicio que deseas realizar y te guiaremos en el proceso.</p>
-            <form class="services-items">
+            <form class="services-items" id="servicesForm">
 
 
                 <button type="submit">Seleccionar</button>

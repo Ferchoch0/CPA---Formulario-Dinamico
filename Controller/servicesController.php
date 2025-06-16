@@ -38,7 +38,28 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'GET') {
             throw new Exception("Acción no válida");
     }
 } else if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
-
+    $action = $_POST['action'];
+    
+    switch ($action) {
+        case 'selectService':
+            if (isset($_POST['service'])) {
+                $serviceId = $_POST['service'];
+                $_SESSION['service'] = $serviceId; // Guardar el ID del servicio en la sesión
+                echo json_encode([
+                    'status' => 'success', 
+                    'message' => 'Servicio seleccionado correctamente', 
+                    'serviceId' => $serviceId 
+                ]);
+            } else {
+                echo json_encode([
+                    'status' => 'error', 
+                    'message' => 'ID de servicio no proporcionado'
+                ]);
+            }
+            break;
+        default:
+            throw new Exception("Acción no válida");
+    }
 }
 
 ?>

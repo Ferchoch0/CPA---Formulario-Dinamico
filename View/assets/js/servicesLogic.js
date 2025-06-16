@@ -1,7 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
     getServicesData();
 
- function getServicesData() {
+        
+    const notyf = new Notyf({
+        duration: 3000,
+        position: {
+          x: 'right',
+          y: 'top',
+        },
+        dismissible: false,
+      });
+
+
+    function getServicesData() {
         fetch('../Controller/servicesController.php?action=getServices')
             .then(response => response.json())
             .then(data => {
@@ -23,11 +34,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     input.value = service.service_id;
                     if (index === 0) input.checked = true;
 
-                    input.addEventListener('change', () => {
-                        // Podés guardar en sesión o manejar la lógica de selección acá
-                        selectService(service.service_id);
-                    });
-
                     const iconSpan = document.createElement('span');
                     iconSpan.className = 'radio-tile';
                     iconSpan.innerHTML = `<iconify-icon icon="${service.icon}" width="24" height="24"></iconify-icon>`;
@@ -42,9 +48,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     container.appendChild(label);
                 });
 
-                 const submitBtn = document.createElement('button');
+                const submitBtn = document.createElement('button');
                 submitBtn.type = 'submit';
-                submitBtn.className = 'submit-btn'; // Por si querés darle estilos
+                submitBtn.className = 'submit-btn';
                 submitBtn.textContent = 'Continuar';
                 container.appendChild(submitBtn);
             })
@@ -52,4 +58,35 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error cargando los servicios:', error);
             });
     }
+
+    function selectService(form) {
+        const formData = new FormData(form);
+        console.log('Datos del formulario:', Object.fromEntries(formData.entries()));
+        formData.append('action', 'selectService');
+        fetch('../Controller/servicesController.php', {
+            method: "POST",
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    notyf.success(data.message);
+                    setTimeout(() => {
+                        window.location.href = '../View/form.php';
+                    }, 2000);
+                } else {
+                    notyf.error(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error al seleccionar el servicio:', error);
+            });
+    }
+
+    document.getElementById("servicesForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        selectService(this);
+    });
+
+
 });
