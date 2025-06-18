@@ -4,7 +4,7 @@ session_start();
 require_once '../Model/servicesModel.php';
 
 $servicesModel = new ServicesModel($conn);
-$servicesId = $_SESSION['services_id'] ?? null;
+$servicesId = $_SESSION['services_id'] ?? 1;
 
 if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'GET') {
     
@@ -23,20 +23,15 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'GET') {
         case 'getOptions':
             $form = $servicesModel->getForm($servicesId);
              if ($form) {
-                foreach ($form as $formItem) {
-                    echo "
-                        <div>
-                            <h2>{$formItem['name']}</h2>
-                            <input type='{$formItem['type']}' name='{$formItem['name']}' required>
-                        </div>";
-                }
+                echo json_encode($form); // Devolver el formulario en formato JSON
             } else {
-                echo "<tr><td colspan='6'>No hay productos registrados</td></tr>";
+                echo json_encode([]); // array vacío si no hay formulario
             }
             break;
         default:
             throw new Exception("Acción no válida");
     }
+
 } else if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'];
     

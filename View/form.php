@@ -14,8 +14,8 @@ require_once 'head.php'
 
     <main>
         <div class="container">
-            <form action="index.php" method="post">
-                <div class="form-group">
+            <form id="selectQuestions" class="questions-items">
+                <!-- <div class="form-group">
                     <label for="name">Nombre:</label>
                     <input type="text" id="name" name="name" required>
                 </div>
@@ -35,12 +35,14 @@ require_once 'head.php'
                 </div>
                 <div class="form-boton">
                     <button type="submit" class="button">Enviar</button>
-                </div>
+                </div> -->
             </form>
 
         </div>
     </main>
 
 </body>
+
+<script src="assets/js/formLogic.js"></script>
 
 </html>
