@@ -22,9 +22,20 @@ class ServicesModel{
     }
 
     public function getForm($service_id) {
-        $sql = "SELECT * FROM services_options WHERE service_id = ?";
+        $sql = "SELECT * FROM service_options WHERE services_id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $service_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+
+    public function getQuestions($option_id) {
+        $sql = "SELECT * FROM questions WHERE option_id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $option_id);
         $stmt->execute();
         $result = $stmt->get_result();
         $stmt->close();

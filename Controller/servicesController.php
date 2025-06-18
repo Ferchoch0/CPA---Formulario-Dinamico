@@ -4,7 +4,7 @@ session_start();
 require_once '../Model/servicesModel.php';
 
 $servicesModel = new ServicesModel($conn);
-$servicesId = $_SESSION['services_id'] ?? 1;
+$servicesId = $_SESSION['services_id'] ?? 1; // Obtener el ID del servicio de la sesión, si está establecido
 
 if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'GET') {
     
@@ -28,6 +28,17 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'GET') {
                 echo json_encode([]); // array vacío si no hay formulario
             }
             break;
+
+        case 'getQuestions':
+            $optionId = $_GET['optionId'] ?? null;
+            $questions = $servicesModel->getQuestions($optionId);
+            if ($questions) {
+                echo json_encode($questions); // Devolver las preguntas en formato JSON
+            } else {
+                echo json_encode([]); // array vacío si no hay preguntas
+            }
+            break;
+
         default:
             throw new Exception("Acción no válida");
     }
