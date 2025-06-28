@@ -29,33 +29,39 @@ function getOptionsData() {
 
                 const label = document.createElement('label');
                 label.textContent = option.name;
-                label.setAttribute('for', option.name);
+                label.setAttribute('for', 'question_' + option.option_id);
                 wrapper.appendChild(label);
 
                 if (option.type === 'textarea') {
                     const textarea = document.createElement('textarea');
-                    textarea.name = option.name;
-                    textarea.id = option.name;
+                    textarea.name = 'question_' + option.option_id;
+                    textarea.id = 'question_' + option.option_id;
                     textarea.required = true;
                     wrapper.appendChild(textarea);
                 } else if (option.type === 'radio') {
                     const radioContainer = document.createElement('div');
                     radioContainer.className = 'radio';
 
-                    getQuestionData(option.option_id, option.name, radioContainer);
+                    getQuestionData(option.option_id, 'question_' + option.option_id, radioContainer);
 
                     wrapper.appendChild(radioContainer);
                 } else {
                     const input = document.createElement('input');
                     input.type = option.type;
-                    input.name = option.name;
-                    input.id = option.name;
+                    input.name = 'question_' + option.option_id;
+                    input.id = 'question_' + option.option_id;
                     input.required = true;
                     wrapper.appendChild(input);
                 }
 
                 container.appendChild(wrapper);
             });
+
+             const submitBtn = document.createElement('button');
+                submitBtn.type = 'submit';
+                submitBtn.className = 'submit-btn';
+                submitBtn.textContent = 'Continuar';
+                container.appendChild(submitBtn);
         })
         .catch(error => {
             console.error('Error cargando las opciones del formulario:', error);
@@ -70,7 +76,7 @@ function getQuestionData(optionId, inputName, container) {
             data.forEach(question => {
                 const input = document.createElement('input');
                 input.type = 'radio';
-                input.id = `${inputName}_${question.value}`;
+                input.id = `${inputName}_${question.question_id}`;
                 input.name = inputName;
                 input.value = question.value;
 
@@ -86,5 +92,34 @@ function getQuestionData(optionId, inputName, container) {
             console.error('Error cargando las preguntas:', error);
         });
 }
+
+function submitForm(form) {
+    const formData = new FormData(form);
+    formData.append('action', 'submitForm');
+
+    fetch('../Controller/generatorController.php', {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                notyf.success(data.message);
+                setTimeout(() => {
+                    console.log('Redirigiendo a la página de inicio...');
+                }, 2000);
+            } else {
+                notyf.error(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error al enviar el formulario:', error);
+        });
+    }
+
+    document.getElementById('selectQuestions').addEventListener('submit', function (e) {
+        e.preventDefault();
+        submitForm(this);
+    });
 
 })

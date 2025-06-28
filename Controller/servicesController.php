@@ -63,6 +63,33 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'GET') {
                 ]);
             }
             break;
+
+        case 'submitForm':
+            if (isset($_POST['formData'])) {
+
+                $clientId = $_POST['clientId'] ?? null;
+                $fechVisit = $_POST['fechVisit'] ?? null;
+                $pdfFile = $_POST['pdfFile'] ?? null;
+
+                if ($serviceId) {
+                    $result = $servicesModel->historyService($servicesId, $clientId, $fechVisit, $pdfFile);
+                    if ($result) {
+                        echo json_encode([
+                            'status' => 'success', 
+                            'message' => 'Formulario enviado correctamente'
+                        ]);
+                    } else {
+                        echo json_encode([
+                            'status' => 'error', 
+                            'message' => 'Error al enviar el formulario'
+                        ]);
+                    }
+                } else {
+                    echo json_encode(['status' => 'error', 'message' => 'ID de servicio no encontrado en la sesión']);
+                }
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Datos del formulario no proporcionados']);
+            }
         default:
             throw new Exception("Acción no válida");
     }

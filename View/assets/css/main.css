@@ -5,6 +5,7 @@
   --success: #6feb8b;
   --transparent: transparent;
   --text: #212529;
+  --white: #ffffff;
   --info: #6c757d;
   --breakpoint-xs: 0;
   --breakpoint-sm: 576px;
@@ -29,6 +30,7 @@ body {
   font-weight: 400;
   line-height: 1.5;
   background-color: white;
+  min-height: 100vh;
   overflow: hidden;
   color: var(--text);
 }

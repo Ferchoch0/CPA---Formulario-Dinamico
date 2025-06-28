@@ -21,10 +21,10 @@ class ServicesModel{
         }
     }
 
-    public function getForm($service_id) {
+    public function getForm($serviceId) {
         $sql = "SELECT * FROM service_options WHERE services_id = ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $service_id);
+        $stmt->bind_param("i", $serviceId);
         $stmt->execute();
         $result = $stmt->get_result();
         $stmt->close();
@@ -32,14 +32,26 @@ class ServicesModel{
     }
 
 
-    public function getQuestions($option_id) {
+    public function getQuestions($optionId) {
         $sql = "SELECT * FROM questions WHERE option_id = ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $option_id);
+        $stmt->bind_param("i", $optionId);
         $stmt->execute();
         $result = $stmt->get_result();
         $stmt->close();
         return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function historyService($serviceId, $clientId, $fechVisit, $pdfFile) {
+        $sql = "INSERT INTO services_history (services_id, client_id, fech_visit, pdf_file) VALUES (?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("iiss", $serviceId, $clientId, $fechVisit, $pdfFile);
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+        
     }
 
 
