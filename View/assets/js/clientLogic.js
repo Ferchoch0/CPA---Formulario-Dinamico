@@ -24,30 +24,56 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                data.forEach(client => {
-                    const wrapper = document.createElement('div');
-                    wrapper.className = 'form-group';
+                const wrapper = document.createElement('div');
+                wrapper.className = 'container-radio';
 
-                    const label = document.createElement('label');
-                    label.textContent = client.name;
-                    label.setAttribute('for', 'client_' + client.client_id);
-                    wrapper.appendChild(label);
+                const radioGroup = document.createElement('div');
+                radioGroup.className = 'radio-tile-group';
+
+                data.forEach(client => {
+                    const inputContainer = document.createElement('div');
+                    inputContainer.className = 'input-container';
 
                     const input = document.createElement('input');
-                    input.type = 'text';
-                    input.name = 'client_' + client.client_id;
-                    input.id = 'client_' + client.client_id;
-                    input.required = true;
-                    wrapper.appendChild(input);
+                    input.type = 'radio';
+                    input.className = 'radio-button';
+                    input.name = 'client_id';
+                    input.id = `client_${client.client_id}`;
+                    input.value = client.client_id;
 
-                    container.appendChild(wrapper);
+                    const tile = document.createElement('div');
+                    tile.className = 'radio-tile';
+
+                    const iconDiv = document.createElement('div');
+                    iconDiv.className = 'icon client-icon';
+
+                    const label = document.createElement('label');
+                    label.htmlFor = `client_${client.client_id}`;
+                    label.className = 'radio-tile-label';
+                    label.textContent = client.name;
+
+                    tile.appendChild(iconDiv);
+                    tile.appendChild(label);
+
+                    inputContainer.appendChild(input);
+                    inputContainer.appendChild(tile);
+
+                    radioGroup.appendChild(inputContainer);
                 });
+
+                wrapper.appendChild(radioGroup);
+                container.appendChild(wrapper);
+
+                const btnContainer = document.createElement('div');
+                btnContainer.className = 'btn-primary-container';
 
                 const submitBtn = document.createElement('button');
                 submitBtn.type = 'submit';
                 submitBtn.className = 'btn btn-primary';
-                submitBtn.textContent = 'Enviar';
-                container.appendChild(submitBtn);
+                submitBtn.textContent = 'Seleccionar Cliente';
+
+                btnContainer.appendChild(submitBtn);
+                container.appendChild(btnContainer);
             })
             .catch(error => {
                 console.error('Error fetching clients:', error);
@@ -58,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const openModalBtn = document.querySelector(".menu--button");
     const closeModalBtn = document.querySelector(".close");
 
-      if (openModalBtn) {
+    if (openModalBtn) {
         openModalBtn.addEventListener("click", () => {
             modal.style.display = "flex";
             setTimeout(() => {
@@ -67,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-     if (closeModalBtn) {
+    if (closeModalBtn) {
         closeModalBtn.addEventListener("click", () => {
             modal.style.opacity = "0";
             setTimeout(() => {
@@ -76,26 +102,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-      window.addEventListener("click", (event) => {
+    window.addEventListener("click", (event) => {
         if (event.target === modal) {
             modal.style.opacity = "0";
             setTimeout(() => {
                 modal.style.display = "none";
             }, 300); // Tiempo de la transición
-        } 
+        }
     });
 
     function addClient(form) {
         const formData = new FormData(form);
+        formData.append('action', 'addClient');
 
-        fetch(`../Controller/servicesController.php?action=addClient`, {
+        fetch(`../Controller/clientController.php`, {
             method: 'POST',
             body: formData
         })
             .then(response => response.json())
             .then(data => {
-                if (data.success) {
-                    notyf.success('Cliente agregado exitosamente');
+                if (data.status === 'success') {
+                    notyf.success(data.message);
                     getClientsData();
                 } else {
                     notyf.error('Error al agregar cliente: ' + data.message);
@@ -111,5 +138,36 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         addClient(this);
     });
+
+    function selectClient(form) {
+        const formData = new FormData(form);
+        formData.append('action', 'selectClient');
+
+        fetch(`../Controller/clientController.php`, {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    notyf.success(data.message);
+                    setTimeout(() => {
+                        window.location.href = '../View/services.php';
+                    }, 2000);
+                } else {
+                    notyf.error('Error al seleccionar cliente: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error selecting client:', error);
+                notyf.error('Error al seleccionar cliente');
+            });
+    }
+
+    document.getElementById("selectClients").addEventListener("submit", function (e) {
+        e.preventDefault();
+        selectClient(this);
+    });
+
 
 });

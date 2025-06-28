@@ -14,9 +14,10 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') 
     switch ($action) {
         case 'submitForm':
             $questions = $servicesModel->getForm($servicesId);
+            $data = $servicesModel->getClient($_SESSION['client_id'] ?? null); // Obtener los datos del cliente de la sesión, si está establecido
 
             try {
-                $pdfFile = PDFService::generatePDF($questions, $_POST);
+                $pdfFile = PDFService::generatePDF($questions, $_POST, $data);
                 $excelFile = ExcelService::generateExcel($questions, $_POST);
             } catch (Exception $e) {
                 echo json_encode([
@@ -30,22 +31,27 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') 
                 $excelName = basename($excelFile);
                 $clientId = $_SESSION['client_id'] ?? null; // Obtener el ID del cliente de la sesión, si está establecido
                 $fechVisit = date('Y-m-d H:i:s'); // Fecha y hora actual
+                $nameClient = $data['name'] ?? 'Cliente Desconocido'; // Nombre del cliente, si está disponible
 
                 $result = $servicesModel->historyService($servicesId, $clientId, $fechVisit, $pdfName);
 
                 if ($result) {
 
-                echo json_encode([
-                    'status' => 'success',
-                    'message' => 'Formulario enviado y PDF generado correctamente',
-                    'pdfFile' => $pdfName,
-                    'excelFile' => $excelName
-                ]);
+                    echo json_encode([
+                        'status' => 'success',
+                        'message' => 'Formulario enviado y PDF generado correctamente',
+                        'pdfFile' => $pdfFile,
+                        'excelFile' => $excelFile,
+                        'pdfName' => $pdfName,
+                        'excelName' => $excelName,
+                        'clientName' => $nameClient,
+
+                    ]);
                 } else {
-                echo json_encode([
-                    'status' => 'error',
-                    'message' => 'Error al guardar el historial del servicio'
-                ]);
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => 'Error al guardar el historial del servicio'
+                    ]);
                 }
             } else {
                 echo json_encode([

@@ -15,45 +15,15 @@ require_once 'head.php'
     <?php require_once 'navbar.php' ?>
 
     <main class="container">
-        <form id="selectClients" class="clients-items">
-            <div class="container-radio">
-                <div class="radio-tile-group">
-                    <div class="input-container">
-                        <input id="walk" class="radio-button" type="radio" name="radio">
-                        <div class="radio-tile">
-                            <div class="icon walk-icon">
-
-                            </div>
-                            <label for="walk" class="radio-tile-label">Walk</label>
-                        </div>
-                    </div>
-
-                    <div class="input-container">
-                        <input id="bike" class="radio-button" type="radio" name="radio">
-                        <div class="radio-tile">
-                            <div class="icon bike-icon">
-
-                            </div>
-                            <label for="bike" class="radio-tile-label">Bike</label>
-                        </div>
-                    </div>
-
-                    <div class="input-container">
-                        <input id="drive" class="radio-button" type="radio" name="radio">
-                        <div class="radio-tile">
-                            <div class="icon car-icon">
-
-                            </div>
-                            <label for="drive" class="radio-tile-label">Drive</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </form>
         <div class="menu--button-container">
             <button class="menu--button">Crear Nuevo cliente</button>
         </div>
+
+        <form id="selectClients" class="clients-items">
+            
+
+        </form>
+        
 
         <div id="addModal" class="modal">
             <div class="modal-content little">
@@ -83,12 +53,16 @@ require_once 'head.php'
                                 placeholder="Ingresar una Direccion" autocomplete="off" required>
                         </div>
                     </label>
+
+                    <button type="submit" class="submit-button">Agregar</button>
                 </form>
             </div>
         </div>
     </main>
 
 </body>
+
+<script src="assets/js/clientLogic.js"></script>
 
 
 </html>

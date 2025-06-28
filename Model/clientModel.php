@@ -21,10 +21,10 @@ class ClientsModel{
         }
     }
 
-    public function addClient($name, $description, $address) {
-        $sql = "INSERT INTO clients (name, description, address) VALUES (?, ?, ?)";
+    public function addClient($name, $contact, $address, $fech_create) {
+        $sql = "INSERT INTO clients (name, client_phone, address, fech_create) VALUES (?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("sss", $name, $description, $address);
+        $stmt->bind_param("siss", $name, $contact, $address, $fech_create);
         if ($stmt->execute()) {
             return true;
         } else {

@@ -21,6 +21,17 @@ class ServicesModel{
         }
     }
 
+    public function getClient($clientId) {
+        $sql = "SELECT * FROM clients WHERE client_id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
+        return $result->fetch_assoc();
+
+    }
+
     public function getForm($serviceId) {
         $sql = "SELECT * FROM service_options WHERE services_id = ?";
         $stmt = $this->conn->prepare($sql);

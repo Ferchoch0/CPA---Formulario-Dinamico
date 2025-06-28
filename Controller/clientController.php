@@ -25,12 +25,13 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'GET') {
 
     switch ($action) {
         case 'addClient':
-            if (isset($_POST['name']) && isset($_POST['description']) && isset($_POST['address'])) {
+            if (isset($_POST['name']) && isset($_POST['contact']) && isset($_POST['address'])) {
                 $name = $_POST['name'];
-                $description = $_POST['description'];
+                $contact = $_POST['contact'];
                 $address = $_POST['address'];
+                $fech = date('Y-m-d H:i:s');
 
-                $result = $clientsModel->addClient($name, $description, $address);
+                $result = $clientsModel->addClient($name, $contact, $address, $fech);
                 if ($result) {
                     echo json_encode([
                         'status' => 'success', 
@@ -44,6 +45,17 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'GET') {
                 }
             } else {
                 echo json_encode(['status' => 'error', 'message' => 'Datos incompletos']);
+            }
+            break;
+
+        case 'selectClient':
+            if (isset($_POST['client_id'])) {
+                $clientId = $_POST['client_id'];
+                $_SESSION['client_id'] = $clientId;
+                echo json_encode(['status' => 'success', 'message' => 'Cliente seleccionado correctamente']);
+                
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'ID de cliente no proporcionado']);
             }
             break;
 

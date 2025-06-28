@@ -31,7 +31,6 @@ body {
   line-height: 1.5;
   background-color: white;
   min-height: 100vh;
-  overflow: hidden;
   color: var(--text);
 }
 
