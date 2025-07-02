@@ -8,9 +8,6 @@ form {
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
-    border-radius: 1.5rem;
-    background-color: rgb(247, 247, 247);
-    border: #033d94 1px solid;
 }
 
 .form-group {

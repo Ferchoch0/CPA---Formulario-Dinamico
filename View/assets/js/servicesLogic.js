@@ -61,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function selectService(form) {
         const formData = new FormData(form);
-        console.log('Datos del formulario:', Object.fromEntries(formData.entries()));
         formData.append('action', 'selectService');
         fetch('../Controller/servicesController.php', {
             method: "POST",

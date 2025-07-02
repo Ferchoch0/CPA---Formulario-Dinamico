@@ -19,7 +19,7 @@ function getOptionsData() {
             container.innerHTML = '';
 
             if (data.length === 0) {
-                container.innerHTML = "<p>No hay productos registrados</p>";
+                container.innerHTML = "<p>No hay preguntas cargadas</p>";
                 return;
             }
 

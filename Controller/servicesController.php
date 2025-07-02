@@ -4,7 +4,9 @@ session_start();
 require_once '../Model/servicesModel.php';
 
 $servicesModel = new ServicesModel($conn);
-$servicesId = $_SESSION['services_id'] ?? 1; // Obtener el ID del servicio de la sesión, si está establecido
+$servicesId = $_SESSION['service'] ?? null; // Obtener el ID del servicio de la sesión, si está establecido
+
+header('Content-Type: application/json');
 
 if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'GET') {
     
